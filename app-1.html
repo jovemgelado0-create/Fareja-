@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Fareja · sistema para pet shop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#edf3ef;--cd:#fff;--tx:#10312f;--mu:#5c7471;--ac:#123c3a;--ac2:#fff;--hl:#f4b400;--bd:#d3e0db;--wr:#d6453d;--nv:#123c3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c1f1e;--cd:#13302e;--tx:#e6f2ee;--mu:#93b0aa;--ac:#f4b400;--ac2:#10312f;--bd:#234643;--wr:#ff8a80;--nv:#081615}}
+:root[data-theme="dark"]{--bg:#0c1f1e;--cd:#13302e;--tx:#e6f2ee;--mu:#93b0aa;--ac:#f4b400;--ac2:#10312f;--bd:#234643;--wr:#ff8a80;--nv:#081615}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:72px}
+[hidden]{display:none!important}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--cd);border-radius:8px;padding:7px 11px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--hl);outline-offset:1px}
+input,select{width:100%;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--cd)}
+#nv{position:fixed;bottom:0;left:0;right:0;z-index:5;display:flex;background:var(--nv);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+#nv .lg{display:none}
+#nv button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:0;color:#e6f2ee;font-size:11px;padding:5px 2px;border-radius:10px}
+#nv button.on{background:var(--hl);color:#10312f;font-weight:800}
+main{padding:14px;max-width:1100px;margin:auto}
+h2{font-size:17px;font-weight:800;margin:0 0 8px;letter-spacing:-.01em}
+.cd{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.nar{max-width:380px;margin:30px auto}
+.cols{display:grid;gap:12px;grid-template-columns:1fr}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:8px 0}
+.chip{white-space:nowrap;border-radius:99px}
+.chip.on{background:var(--ac);color:var(--ac2);border-color:var(--ac)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.prod{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px;min-height:96px}
+.prod:disabled{opacity:.45;cursor:not-allowed}
+.prod span{font-weight:800;margin-top:auto;font-size:17px}
+small{display:block;color:var(--mu);font-size:12px}
+.low{color:var(--wr)!important}.mu{color:var(--mu)}.ok{color:#1d7a4f}
+.li{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd)}
+.li2{display:flex;justify-content:space-between;gap:8px;padding:4px 0}
+.q{display:flex;gap:6px;align-items:center}
+label{display:block;margin-top:8px;font-size:13px;color:var(--mu)}
+#tot div{display:flex;justify-content:space-between;margin-top:4px}
+.big{font-size:21px;font-weight:800;margin:8px 0}
+.pri{width:100%;padding:12px;margin-top:10px;font-weight:800;font-size:16px;background:var(--hl);color:#10312f;border-color:var(--hl)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.fx{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.fx .pri{margin:0;padding:8px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+td{padding:7px 6px;border-bottom:1px solid var(--bd);vertical-align:top}
+.k{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.k b{font-size:21px;font-weight:800}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--bd)}
+#m{position:fixed;inset:0;background:#0009;z-index:9;display:flex;align-items:center;justify-content:center;padding:16px}
+#m .cd{width:100%;max-width:400px;max-height:90vh;overflow:auto;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:8px 14px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:12}
+.toast.on{opacity:1}
+[data-v=pc] body{padding-bottom:0}
+html.fz body{min-width:1000px}
+#nv .sw{display:none}
+[data-v=pc] #nv{top:0;right:auto;width:196px;flex-direction:column;gap:4px;padding:18px 10px}
+[data-v=pc] #nv .lg{display:block;color:#fff;font-size:30px;font-weight:800;letter-spacing:-.04em;margin:0 6px 18px}
+[data-v=pc] #nv .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--hl);margin-left:2px}
+[data-v=pc] #nv .lg small{color:#9fc4bd;font-size:12px;font-weight:400;letter-spacing:0;margin-top:2px}
+[data-v=pc] #nv button{flex:none;flex-direction:row;gap:10px;font-size:15px;padding:10px 12px;justify-content:flex-start}
+[data-v=pc] #nv .sw{display:flex;margin-top:auto;border:1px solid #2f5f5a}
+[data-v=pc] main{margin-left:196px;max-width:none;padding:22px 26px}
+[data-v=pc] .cols{grid-template-columns:1fr 350px}
+[data-v=pc] .k{grid-template-columns:repeat(4,1fr)}
+[data-v=pc] .toast{bottom:20px}
+[data-v=mob] main,[data-v=mob] #nv{max-width:480px;margin-left:auto;margin-right:auto}
+</style></head><body>
+<nav id="nv"></nav><main id="mn"></main><div id="m" hidden></div><div id="t" class="toast"></div>
+<script>
+const $=s=>document.querySelector(s),R=v=>(+v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),
+esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),
+D=t=>new Date(t).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}),
+opt=(a,f)=>a.map(f).join('');
+const P0=[['7891001','Ração Cães Adultos 10kg','Ração',129.9,92,12,4],['7891002','Ração Gatos Castrados 3kg','Ração',74.9,52,9,3],['7891003','Sachê Gatos 85g','Ração',3.99,2.2,60,12],['7891004','Petisco Bifinho 65g','Petiscos',8.5,4.6,30,8],['7891005','Osso Nó Médio','Petiscos',12,6.5,18,5],['7891006','Areia Higiênica 4kg','Higiene',22.9,13,15,5],['7891007','Shampoo Neutro 500ml','Higiene',27.5,15,8,3],['7891008','Coleira Nylon M','Acessórios',24.9,11,14,4],['7891009','Bolinha de Borracha','Brinquedos',9.9,4,25,6],['7891010','Antipulgas Cães 10-20kg','Farmácia',69.9,44,3,3]];
+const SV=[['Banho porte P','Banho e tosa',45],['Banho porte M','Banho e tosa',60],['Banho porte G','Banho e tosa',80],['Tosa higiênica','Banho e tosa',35],['Consulta veterinária','Clínica',120]];
+const fresh=()=>({loja:'Meu Pet Shop',p:[...P0.map((a,i)=>({id:i+1,c:a[0],n:a[1],k:a[2],pr:a[3],co:a[4],e:a[5],mn:a[6]})),...SV.map((a,i)=>({id:50+i,c:'',n:a[0],k:a[1],pr:a[2],co:0,sv:1}))],cl:[],ag:[],v:[],cx:null,cxh:[],rec:[],nid:100});
+let S,tab='caixa',cart={},cat='Todos',cli='',per='hoje',ed=null;
+try{S=JSON.parse(localStorage.getItem('fareja1'))}catch(e){}
+if(!S||!S.p)S=fresh();
+const save=()=>{try{localStorage.setItem('fareja1',JSON.stringify(S))}catch(e){}},
+uid=()=>S.nid++,prod=i=>S.p.find(x=>x.id==i),cl=i=>S.cl.find(x=>x.id==i),
+toast=m=>{const t=$('#t');t.textContent=m;t.className='toast on';setTimeout(()=>t.className='toast',2200)},
+modal=h=>{$('#m').innerHTML='<div class="cd">'+h+'</div>';$('#m').hidden=false},close=()=>$('#m').hidden=true,
+bd=d=>d.split('-').reverse().join('/');
+function nav(){$('#nv').innerHTML=`<div class="lg">fareja<i></i><small>${esc(S.loja)}</small></div>`+[['caixa','🧾','Caixa'],['agenda','📅','Agenda'],['cls','🐕','Clientes'],['est','📦','Estoque'],['rel','📈','Relatórios'],['aj','⚙️','Ajustes']].map(([k,i,l])=>`<button data-t="${k}" class="${k==tab?'on':''}"><span>${i}</span>${l}</button>`).join('')+'<button class="sw" data-vm="mob">📱 Modo celular</button>'}
+function go(){nav();({caixa,agenda,cls,est,rel,aj})[tab]()}
+/* CAIXA */
+function caixa(){const c=S.cx;
+ if(!c)return $('#mn').innerHTML=`<div class="cd nar"><h2>Caixa fechado</h2><p class="mu">Informe o troco inicial para começar a vender.</p><label>Troco inicial (R$)<input id="ini" type="number" min="0" step="0.01" value="0"></label><button class="pri" data-a="abrir">Abrir caixa</button></div>`;
+ $('#mn').innerHTML=`<div class="bar"><span class="mu">Caixa aberto desde ${D(c.t0)}</span><span><button data-a="mov:Suprimento">+ Suprimento</button> <button data-a="mov:Sangria">− Sangria</button> <button data-a="fechar">Fechar caixa</button></span></div>
+<div class="cols"><div><input id="q" placeholder="Buscar produto, serviço ou código de barras (Enter adiciona)" autocomplete="off"><div id="cats" class="chips"></div><div id="grid" class="grid"></div></div>
+<aside class="cd"><h2>Venda atual</h2><div id="cart"></div>
+<label>Cliente<select id="cl"><option value="">Sem cadastro</option>${opt(S.cl,x=>`<option value="${x.id}">${esc(x.n)}</option>`)}</select></label>
+<label>Desconto (R$)<input id="d" type="number" min="0" step="0.01" value="0"></label>
+<label>Pagamento<select id="pg"><option>Dinheiro</option><option>Pix</option><option>Cartão de débito</option><option>Cartão de crédito</option><option>Fiado</option></select></label>
+<label id="rc">Valor recebido (R$)<input id="r" type="number" min="0" step="0.01"></label>
+<div id="tot"></div><button class="pri" data-a="fin">Finalizar venda</button></aside></div>`;
+ $('#cl').value=cli;grid();cartR()}
+function grid(){const q=$('#q').value.toLowerCase();
+ $('#cats').innerHTML=opt(['Todos',...new Set(S.p.map(p=>p.k))],c=>`<button class="chip${c==cat?' on':''}" data-c="${esc(c)}">${esc(c)}</button>`);
+ $('#grid').innerHTML=opt(S.p.filter(p=>(cat=='Todos'||p.k==cat)&&(p.n.toLowerCase().includes(q)||(p.c&&p.c.includes(q)))),p=>{const o=!p.sv&&p.e<1;return`<button class="prod" data-p="${p.id}" ${o?'disabled':''}><b>${esc(p.n)}</b><span>${R(p.pr)}</span><small class="${!p.sv&&p.e<=p.mn?'low':''}">${p.sv?'Serviço':o?'Sem estoque':p.e+' em estoque'}</small></button>`})||'<p class="mu">Nada encontrado.</p>'}
+function cartR(){$('#cart').innerHTML=opt(Object.keys(cart),i=>{const p=prod(i);return`<div class="li"><span>${esc(p.n)}<small>${R(p.pr)}</small></span><span class="q"><button data-m="${i}:-1">−</button>${cart[i]}<button data-m="${i}:1">+</button></span><b>${R(p.pr*cart[i])}</b></div>`})||'<p class="mu">Toque em um produto ou serviço para começar.</p>';totals()}
+function totals(){const s=Object.keys(cart).reduce((a,i)=>a+prod(i).pr*cart[i],0),d=Math.min(Math.max(+$('#d').value||0,0),s),t=s-d,pg=$('#pg').value,r=+$('#r').value||0;
+ $('#rc').hidden=pg!='Dinheiro';
+ $('#tot').innerHTML=`<div>Subtotal <b>${R(s)}</b></div><div class="big">Total <b>${R(t)}</b></div>`+(pg=='Dinheiro'&&r?`<div>${r>=t?'Troco':'Faltam'} <b>${R(Math.abs(r-t))}</b></div>`:'');return[s,d,t]}
+function add(id,n){const p=prod(id),q=(cart[id]||0)+n;
+ if(q<=0)delete cart[id];else if(!p.sv&&q>p.e)return toast('Estoque insuficiente');else cart[id]=q;cartR()}
+function fin(){const ids=Object.keys(cart);if(!ids.length)return toast('Adicione itens à venda');
+ const[s,d,t]=totals(),pg=$('#pg').value,r=+$('#r').value||0;
+ if(pg=='Fiado'&&!cli)return toast('Escolha um cliente para vender fiado');
+ if(pg=='Dinheiro'&&r&&r<t)return toast('Valor recebido menor que o total');
+ const it=ids.map(i=>{const p=prod(i);if(!p.sv)p.e-=cart[i];return{n:p.n,q:cart[i],pr:p.pr,co:p.co||0}});
+ const v={id:uid(),t:Date.now(),it,s,d,tot:t,pg,cl:cli,r};S.v.unshift(v);
+ if(pg=='Fiado')cl(cli).fi=(cl(cli).fi||0)+t;
+ cart={};cli='';save();caixa();recibo(v)}
+function recibo(v){const c=v.cl&&cl(v.cl);
+ modal(`<h2>${esc(S.loja)}</h2><p class="mu">${D(v.t)} · Venda #${v.id}${c?' · '+esc(c.n):''}</p>${opt(v.it,i=>`<div class="li2"><span>${i.q}× ${esc(i.n)}</span><b>${R(i.q*i.pr)}</b></div>`)}${v.d?`<div class="li2"><span>Desconto</span><b>−${R(v.d)}</b></div>`:''}<div class="li2 big"><span>Total · ${v.pg}</span><b>${R(v.tot)}</b></div>${v.pg=='Dinheiro'&&v.r>v.tot?`<div class="li2"><span>Troco</span><b>${R(v.r-v.tot)}</b></div>`:''}<button class="pri" data-x>Nova venda</button>`)}
+function cxSum(){const c=S.cx;return c.ini+S.v.filter(v=>v.t>=c.t0&&v.pg=='Dinheiro').reduce((a,v)=>a+v.tot,0)+c.mov.reduce((a,x)=>a+(x.tipo=='Sangria'?-x.val:x.val),0)}
+/* AGENDA */
+function agenda(){const hj=new Date().toISOString().slice(0,10),l=[...S.ag].sort((a,b)=>(a.d+a.h).localeCompare(b.d+b.h));
+ $('#mn').innerHTML=`<div class="cd"><h2>Novo agendamento</h2><div class="fx"><input id="ad" type="date" value="${hj}"><input id="ah" type="time" value="09:00"><select id="ac"><option value="">Cliente</option>${opt(S.cl,x=>`<option value="${x.id}">${esc(x.n)}</option>`)}</select><input id="ap" placeholder="Nome do pet"><select id="as">${opt(S.p.filter(p=>p.sv),p=>`<option value="${p.id}">${esc(p.n)} · ${R(p.pr)}</option>`)}</select><button class="pri" data-a="ag">Agendar</button></div></div>`+
+ (opt(l,a=>{const p=prod(a.sv),c=a.cl&&cl(a.cl);return`<div class="cd bar" style="${a.st!='Agendado'?'opacity:.6':''}"><span><b>${bd(a.d)} · ${a.h}</b> — ${esc(a.pet)}${c?' ('+esc(c.n)+')':''}<small>${p?esc(p.n):'Serviço removido'} · <span class="tag">${a.st}</span></small></span>${a.st=='Agendado'?`<span><button data-a="agok:${a.id}">Concluir e cobrar</button> <button data-a="agno:${a.id}">Cancelar</button></span>`:''}</div>`})||'<p class="mu">Nenhum agendamento. Cadastre o primeiro banho ou tosa acima.</p>')}
+/* CLIENTES */
+function cls(){
+ $('#mn').innerHTML=`<div class="cd"><h2>Novo cliente</h2><div class="fx"><input id="cn" placeholder="Nome"><input id="ct" placeholder="Telefone"><input id="cp" placeholder="Pets (separe por vírgula)"><button class="pri" data-a="cli">Cadastrar</button></div></div>`+
+ (opt(S.cl,c=>`<div class="cd bar"><span><b>${esc(c.n)}</b>${c.t?' · '+esc(c.t):''}<small>${c.pets?'Pets: '+esc(c.pets):'Sem pets cadastrados'}</small></span><span>${c.fi>0?`<b class="low">Deve ${R(c.fi)}</b> <button data-a="rec:${c.id}">Receber</button>`:'<small>Sem fiado</small>'}</span></div>`)||'<p class="mu">Nenhum cliente ainda. Cadastre para vender fiado e agendar serviços.</p>')}
+/* ESTOQUE */
+function est(){const p=ed&&prod(ed)||{};
+ $('#mn').innerHTML=`<div class="cd"><h2>${ed?'Editar item':'Cadastrar produto ou serviço'}</h2><div class="fx"><input id="ec" placeholder="Código de barras" value="${esc(p.c)}"><input id="en" placeholder="Nome" value="${esc(p.n)}"><input id="ek" placeholder="Categoria" value="${esc(p.k)}"><input id="epr" type="number" min="0" step="0.01" placeholder="Preço" value="${p.pr??''}"><input id="eco" type="number" min="0" step="0.01" placeholder="Custo" value="${p.co??''}"><input id="ee" type="number" min="0" placeholder="Estoque" value="${p.e??''}"><input id="em" type="number" min="0" placeholder="Estoque mínimo" value="${p.mn??''}"><select id="esv"><option value="">Produto</option><option value="1" ${p.sv?'selected':''}>Serviço</option></select><button class="pri" data-a="pa">${ed?'Atualizar':'Cadastrar'}</button></div></div>
+<div class="cd tw"><table>${opt(S.p,p=>`<tr><td>${esc(p.n)}<small>${esc(p.k)}${p.c?' · '+esc(p.c):''}</small></td><td>${R(p.pr)}<small>${p.sv?'Serviço':'custo '+R(p.co)}</small></td><td>${p.sv?'—':`<span class="${p.e<=p.mn?'low':''}"><button data-a="st:${p.id}:-1">−</button> ${p.e} <button data-a="st:${p.id}:1">+</button></span><small>mín. ${p.mn}</small>`}</td><td><button data-a="ed:${p.id}">✏️</button> <button data-a="del:${p.id}">🗑</button></td></tr>`)}</table></div>`}
+/* RELATÓRIOS */
+function rel(){const n=new Date();n.setHours(0,0,0,0);const st=+n-({hoje:0,'7 dias':6,'30 dias':29}[per])*864e5,vs=S.v.filter(v=>v.t>=st),tot=vs.reduce((a,v)=>a+v.tot,0),by={},top={};let luc=0;
+ vs.forEach(v=>{by[v.pg]=(by[v.pg]||0)+v.tot;let b=0;v.it.forEach(i=>{top[i.n]=(top[i.n]||0)+i.q;b+=(i.pr-i.co)*i.q});luc+=b-v.d});
+ const fi=S.cl.reduce((a,c)=>a+(c.fi||0),0),rc=S.rec.filter(r=>r.t>=st).reduce((a,r)=>a+r.val,0),bx=S.p.filter(p=>!p.sv&&p.e<=p.mn);
+ $('#mn').innerHTML=`<div class="chips">${opt(['hoje','7 dias','30 dias'],x=>`<button class="chip${x==per?' on':''}" data-r="${x}">${x}</button>`)}</div>
+<div class="k"><div class="cd"><small>Faturamento</small><b>${R(tot)}</b></div><div class="cd"><small>Vendas</small><b>${vs.length}</b></div><div class="cd"><small>Ticket médio</small><b>${R(vs.length?tot/vs.length:0)}</b></div><div class="cd"><small>Lucro estimado</small><b class="ok">${R(luc)}</b></div></div>
+<div class="cols"><div class="cd"><h2>Por forma de pagamento</h2>${opt(Object.entries(by),([k,v])=>`<div class="li2"><span>${k}</span><b>${R(v)}</b></div>`)||'<p class="mu">Sem vendas no período.</p>'}${rc?`<div class="li2"><span class="mu">Fiado recebido</span><b>${R(rc)}</b></div>`:''}<div class="li2"><span class="mu">Fiado em aberto (total)</span><b class="${fi?'low':''}">${R(fi)}</b></div></div>
+<div class="cd"><h2>Mais vendidos</h2>${opt(Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,6),([k,v])=>`<div class="li2"><span>${esc(k)}</span><b>${v}</b></div>`)||'<p class="mu">Sem vendas no período.</p>'}</div></div>
+<div class="cd"><h2>Reposição necessária</h2>${opt(bx,p=>`<div class="li2"><span>${esc(p.n)}</span><b class="low">${p.e} un. (mín. ${p.mn})</b></div>`)||'<p class="mu">Estoque em dia.</p>'}</div>
+<div class="cd"><h2>Últimas vendas</h2>${opt(S.v.slice(0,10),v=>`<div class="li2"><span>${D(v.t)} · ${v.pg}<small>${opt(v.it,i=>i.q+'× '+esc(i.n)).replace(/<\/?[^>]+>/g,'')}</small></span><b>${R(v.tot)}</b></div>`)||'<p class="mu">Nenhuma venda registrada.</p>'}</div>
+<div class="cd"><h2>Fechamentos de caixa</h2>${opt(S.cxh.slice(0,5),h=>`<div class="li2"><span>${D(h.t1)}<small>esperado ${R(h.esp)} · contado ${R(h.cont)}</small></span><b class="${h.cont-h.esp?'low':'ok'}">${h.cont-h.esp?R(h.cont-h.esp):'Confere'}</b></div>`)||'<p class="mu">Nenhum fechamento ainda.</p>'}</div>`}
+/* AJUSTES */
+function aj(){$('#mn').innerHTML=`<div class="cd nar" style="max-width:560px;margin:0"><h2>Sua loja</h2><label>Nome do pet shop<input id="ln" value="${esc(S.loja)}"></label><button class="pri" data-a="loja">Salvar</button></div>
+<div class="cd" style="max-width:560px"><h2>Modo de exibição</h2><p class="mu">Escolha como o Fareja aparece neste aparelho.</p><div class="chips">${opt([['auto','Automático'],['mob','Celular'],['pc','Computador']],([k,l])=>`<button class="chip${VM==k?' on':''}" data-vm="${k}">${l}</button>`)}</div></div>
+<div class="cd" style="max-width:560px"><h2>Backup dos dados</h2><p class="mu">Os dados ficam salvos neste aparelho. Copie o texto abaixo para guardar um backup ou cole um backup para restaurar.</p><textarea id="bk" rows="5" style="width:100%;border:1px solid var(--bd);border-radius:8px;background:var(--cd);color:var(--tx);padding:8px">${esc(JSON.stringify(S))}</textarea><button data-a="rest" style="margin-top:8px">Restaurar backup</button> <button data-a="reset" style="margin-top:8px">Apagar tudo</button></div>`}
+/* AÇÕES */
+function act(a,b){const[k,x,y]=a.split(':');
+ if(k=='abrir'){S.cx={t0:Date.now(),ini:+$('#ini').value||0,mov:[]};save();caixa()}
+ else if(k=='fin')fin()
+ else if(k=='mov')modal(`<h2>${x}</h2><label>Valor (R$)<input id="mv" type="number" min="0" step="0.01"></label><label>Motivo<input id="mo"></label><button class="pri" data-a="movok:${x}">Registrar</button><button data-x style="width:100%;margin-top:8px">Cancelar</button>`)
+ else if(k=='movok'){const val=+$('#mv').value;if(!(val>0))return toast('Informe um valor');S.cx.mov.push({t:Date.now(),tipo:x,val,obs:$('#mo').value});save();close();toast(x+' registrada')}
+ else if(k=='fechar')modal(`<h2>Fechar caixa</h2><p>Dinheiro esperado: <b>${R(cxSum())}</b></p><label>Dinheiro contado (R$)<input id="ctd" type="number" min="0" step="0.01"></label><button class="pri" data-a="fechok">Fechar caixa</button><button data-x style="width:100%;margin-top:8px">Cancelar</button>`)
+ else if(k=='fechok'){const c=S.cx,esp=cxSum(),cont=+$('#ctd').value||0;S.cxh.unshift({t0:c.t0,t1:Date.now(),ini:c.ini,esp,cont});S.cx=null;cart={};save();close();caixa();toast(cont==esp?'Caixa fechado e conferido':'Caixa fechado. Diferença: '+R(cont-esp))}
+ else if(k=='ag'){const pet=$('#ap').value.trim();if(!pet||!$('#ad').value||!$('#as').value)return toast('Informe pet, data e serviço');S.ag.push({id:uid(),d:$('#ad').value,h:$('#ah').value||'09:00',cl:$('#ac').value,pet,sv:$('#as').value,st:'Agendado'});save();agenda();toast('Agendado')}
+ else if(k=='agok'){const g=S.ag.find(z=>z.id==x);if(!S.cx)return toast('Abra o caixa para cobrar');if(!prod(g.sv))return toast('Serviço não existe mais');g.st='Concluído';cart={[g.sv]:1};cli=g.cl||'';save();tab='caixa';go()}
+ else if(k=='agno'){S.ag.find(z=>z.id==x).st='Cancelado';save();agenda()}
+ else if(k=='cli'){const n=$('#cn').value.trim();if(!n)return toast('Informe o nome');S.cl.push({id:uid(),n,t:$('#ct').value.trim(),pets:$('#cp').value.trim(),fi:0});save();cls();toast('Cliente cadastrado')}
+ else if(k=='rec'){const c=cl(x);modal(`<h2>Receber de ${esc(c.n)}</h2><p>Em aberto: <b>${R(c.fi)}</b></p><label>Valor (R$)<input id="rv" type="number" min="0" step="0.01" value="${c.fi}"></label><label>Forma<select id="rf"><option>Dinheiro</option><option>Pix</option><option>Cartão de débito</option></select></label><button class="pri" data-a="recok:${x}">Registrar recebimento</button><button data-x style="width:100%;margin-top:8px">Cancelar</button>`)}
+ else if(k=='recok'){const c=cl(x),val=Math.min(+$('#rv').value||0,c.fi),f=$('#rf').value;if(!(val>0))return toast('Informe um valor');c.fi-=val;S.rec.push({t:Date.now(),cl:x,val,pg:f});if(f=='Dinheiro'&&S.cx)S.cx.mov.push({t:Date.now(),tipo:'Recebimento',val,obs:'Fiado '+c.n});save();close();cls();toast('Recebimento registrado')}
+ else if(k=='pa'){const n=$('#en').value.trim(),pr=parseFloat($('#epr').value);if(!n||!(pr>=0))return toast('Informe nome e preço');
+  const o={c:$('#ec').value.trim(),n,k:$('#ek').value.trim()||'Outros',pr,co:parseFloat($('#eco').value)||0,e:parseInt($('#ee').value)||0,mn:parseInt($('#em').value)||0,sv:$('#esv').value?1:0};
+  if(ed)Object.assign(prod(ed),o);else S.p.push({id:uid(),...o});ed=null;save();est();toast('Salvo')}
+ else if(k=='ed'){ed=+x;est();scrollTo(0,0)}
+ else if(k=='st'){const p=prod(x);p.e=Math.max(0,p.e+ +y);save();est()}
+ else if(k=='del'){if(b.dataset.w){S.p=S.p.filter(z=>z.id!=x);delete cart[x];save();est()}else{b.dataset.w=1;b.textContent='Remover?';setTimeout(()=>{b.dataset.w='';b.textContent='🗑'},2500)}}
+ else if(k=='loja'){S.loja=$('#ln').value.trim()||'Meu Pet Shop';save();nav();toast('Salvo')}
+ else if(k=='rest'){try{const o=JSON.parse($('#bk').value);if(!o.p||!o.v)throw 0;S=o;save();go();toast('Backup restaurado')}catch(e){toast('Backup inválido')}}
+ else if(k=='reset'){if(b.dataset.w){S=fresh();cart={};save();go()}else{b.dataset.w=1;b.textContent='Confirmar: apagar tudo';setTimeout(()=>{b.dataset.w='';b.textContent='Apagar tudo'},3000)}}}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.t){tab=d.t;go();scrollTo(0,0)}
+ else if(d.vm)setV(d.vm)
+ else if(d.x!==undefined)close()
+ else if(d.p)add(d.p,1)
+ else if(d.c!==undefined){cat=d.c;grid()}
+ else if(d.r){per=d.r;rel()}
+ else if(d.m){const[i,n]=d.m.split(':');add(i,+n)}
+ else if(d.a)act(d.a,b)});
+document.addEventListener('input',e=>{const i=e.target.id;if(i=='q')grid();else if(i=='d'||i=='r')totals()});
+document.addEventListener('change',e=>{const i=e.target.id;if(i=='pg')totals();else if(i=='cl')cli=e.target.value});
+document.addEventListener('keydown',e=>{if(e.key=='Enter'&&e.target.id=='q'){const v=e.target.value.trim(),p=S.p.find(x=>x.c&&x.c==v);if(p&&(p.sv||p.e>0)){add(p.id,1);e.target.value='';grid()}}});
+let VM='auto';try{VM=localStorage.getItem('fareja_v')||'auto'}catch(e){}
+const W=()=>Math.min(innerWidth,screen.width||innerWidth);
+function applyV(){const v=VM=='auto'?(W()>=820?'pc':'mob'):VM,h=document.documentElement;h.dataset.v=v;h.classList.toggle('fz',VM=='pc');
+ document.querySelector('meta[name=viewport]').content=VM=='pc'&&screen.width<820?'width=1100, viewport-fit=cover':'width=device-width, initial-scale=1, viewport-fit=cover'}
+function setV(v){VM=v;try{localStorage.setItem('fareja_v',v)}catch(e){}applyV();go()}
+addEventListener('resize',()=>{if(VM=='auto')applyV()});
+applyV();go();
+</script></body></html>
